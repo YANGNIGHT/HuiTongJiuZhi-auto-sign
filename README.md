@@ -50,9 +50,12 @@
 
 2、将fork下来的仓库在仓库设置中调为私密仓库（所有账户信息直接放在了user.dat内，未进行任何加密，防止隐私泄露请务必进行私密设置）
 
-3、脚本默认在每天早上7:05进行打卡，加上延迟排队之类的大概是在7:17左右，若要进行自定义请修改.github/workflows/auto-sign.yml第六行的`- cron: '05 23 * * *'`，cron表达式请自行百度
-
-
+3、将  auto-huitongjiuzhi/.github/workflows/auto-sign.yml 第4,5行前的#号去掉
+    #schedule:
+    #- cron: '05 23 * * *'
+     
+4、脚本默认在每天早上7:05进行打卡，加上延迟排队之类的大概是在7:17左右，若要进行自定义请修改.github/workflows/auto-sign.yml第六行的`- cron: '05 23 * * *'`，cron表达式请自行百度
+     
 
 
 ## 🙋‍脚本有问题
