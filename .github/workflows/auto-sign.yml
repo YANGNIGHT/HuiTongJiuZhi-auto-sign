@@ -1,6 +1,6 @@
 name: 打卡
 on:
-    push:
+    #push:
     #schedule:
     #- cron: '05 23 * * *'
 
