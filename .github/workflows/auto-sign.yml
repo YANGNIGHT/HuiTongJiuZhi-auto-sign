@@ -1,0 +1,25 @@
+name: 打卡
+on:
+    push:
+    schedule:
+    # 7:05 everyday in UTC+8, 23:05 everyday in UTC+0
+    - cron: '05 23 * * *'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: 'fork 仓库'
+              uses: actions/checkout@v2
+
+            - name: "初始化Python"
+              uses: actions/setup-python@v1
+              with:
+                python-version: 3.8
+
+            - name: "安装依赖包"
+              run: pip install -r ./requirements.txt
+
+            - name: "运行"
+              run: |
+                python3 auto.py
