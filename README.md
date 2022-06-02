@@ -1,5 +1,3 @@
-<div align="center"> 
-<h1 align="center">
 🌈HuiTongJiuZhi-auto-sign
 
 [![](https://img.shields.io/badge/Author-ReaJason-red "作者")](https://github.com/YANGNIGHT)
