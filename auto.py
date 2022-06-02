@@ -3,8 +3,8 @@ import zmail
 import datetime
 import json
 
-qqmail = 'mvp-en@qq.com'  # 发件人邮箱账号
-qqmailpwd = 'glnbmwfaonvsbaci'  # 发件人邮箱密码
+qqmail = 'jinga36@163.com'  # 发件人邮箱账号
+qqmailpwd = '123456'  # 发件人邮箱密码
 
 # 读取账号密码
 fhandle = open("user.dat", "r", encoding="utf-8")
