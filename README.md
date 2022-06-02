@@ -30,10 +30,10 @@
 - 默认进行单独推送
 - 发送消息的邮箱请在auto.py第5,6行进行修改，注意（常见邮箱中只支持QQ邮箱以及网易邮箱，其他邮箱可能报错）
 - 统一推送请修改：
-（括号中的email为推送邮箱为user.dat中每一行的第三个数据）
+     （括号中的email为推送邮箱为user.dat中每一行的第三个数据）
      `server.send_mail(email, mail_content)  # email为收件人 #发送邮件`
       
-（统一推送的邮箱请替换12345678@qq.com,注意引号不要删除）
+     将email换为统一推送的邮箱，例如替换为'12345678@qq.com',注意引号不要删除
      `server.send_mail('12345678@qq.com', mail_content)  # email为收件人 #发送邮件`
   
 
