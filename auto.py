@@ -32,12 +32,20 @@ for x in fhandle:
         var = response.text  # 未经处理的登录token
         if "Bad credentials" in var:
             print('账号或密码错误，请尝试重新登录：')
+            # 邮箱通知
+            mail_content = {
+                'from': '慧通九职打卡',
+                "subject": '账号或密码错误，请确认密码后重新提交',
+                "Content_text": response.text  # 打卡情况
+            }
+            server = zmail.server(qqmail, qqmailpwd)  # 登录邮箱
+            server.send_mail(email, mail_content)  # email为收件人 #发送邮件
         else:
             idtoken = var[var.index('ey'):-27]  # 去除token多余参数
             print('''
-=================================idtoken=================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼idtoken▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 %s
-=========================================================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼idtoken▼▼▼▼▼▼▼▼▼▼▼▼▼▼
                 '''
                   % idtoken
                   )
@@ -81,14 +89,12 @@ for x in fhandle:
             response = requests.post("https://sso.jvtc.jx.cn/cas/login", params=params, data=data, headers=headers,
                                      allow_redirects=False)
 
-            print(response.headers)
-
             tickets = response.headers['Location']  # 未经处理ticket
             ticket = tickets[tickets.index('ST'):]
             print('''
-=================================ticket==================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼ticket▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 %s
-=========================================================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼ticket▼▼▼▼▼▼▼▼▼▼▼▼▼▼
                 '''
                   % ticket
                   )  # 传递给下一段处理后的ticket
@@ -120,9 +126,9 @@ for x in fhandle:
             jsessionid = jsessionids[
                          jsessionids.index('JSESSIONID=') + 11:jsessionids.index('; path=/')]
             print('''
-            ===============================jsessionid================================
-            %s
-            =========================================================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼jsessionid▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+%s
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼jsessionid▼▼▼▼▼▼▼▼▼▼▼▼▼▼
                 '''
                   % jsessionid
                   )
@@ -155,9 +161,9 @@ for x in fhandle:
             bladeauths = response.headers['Location']
             blade_auth = bladeauths[bladeauths.index('ey'):bladeauths.index('%26refreshtoken%3')]
             print('''
-=================================bladauth=================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼bladauth▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 %s
-==========================================================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼bladauth▼▼▼▼▼▼▼▼▼▼▼▼▼▼
                 '''
                   % blade_auth
                   )
@@ -202,16 +208,19 @@ for x in fhandle:
                 today_location = today_signdata["data"]['signin']['location']  # 今天打卡位置
                 toda_signtime = today_signdata["data"]['signin']['updateTime']  # 今天打卡时间
                 print('''
-=================================今天打卡结果=================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼今日打卡结果▼▼▼▼▼▼▼▼▼▼▼▼▼▼
 %s\n
 '有 %d 个数据存在>>>已打卡'
-============================================================================
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼今日打卡结果▼▼▼▼▼▼▼▼▼▼▼▼▼▼
                                 '''
                       % (response.text, len(response.text))
                       )
 
-                back = '   年轻的' + name + '哟，今天已经打过卡啦！'
-                messge = toda_signtime + '在' + today_location + '成功打卡       '
+                print('年轻的' + name + '哟，今天已经打过卡啦！')
+                print(toda_signtime + '在' + today_location + '成功打卡')
+                print('''
+▁▁▂▂▃▃▄▄▅▅▆▆▇▇██当前账户已完成██▇▇▆▆▅▅▄▄▃▃▂▂▁▁  
+                ''')
             else:
                 # 打卡
                 payload = {"jzqk": "3", "schsjcrq": "0", "hsbg": "null", "dqqdw": "0", "drzt": "0", "xyhs": "0",
@@ -264,7 +273,6 @@ for x in fhandle:
                     "Sec-Fetch-Site": "same-origin",
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0"
                 }
-
                 cookies = {"JSESSIONID": jsessionid}
                 response = requests.get("https://microserver4.jvtc.jx.cn/api/blade-signin/signinlog/getsignin",
                                         headers=headers,
@@ -276,25 +284,25 @@ for x in fhandle:
                 messge = toda_signtime + '在' + today_location + '成功打卡       '
                 print(back)
 
-            # 打卡ip属地
-            url = "http://httpbin.org/ip"  # 也可以直接在浏览器访问这个地址
-            r = requests.get(url)  # 获取返回的值
-            ip = json.loads(r.text)["origin"]  # ip地址，取其中某个字段的值
+                # 打卡ip属地
+                url = "http://httpbin.org/ip"  # 也可以直接在浏览器访问这个地址
+                r = requests.get(url)  # 获取返回的值
+                ip = json.loads(r.text)["origin"]  # ip地址，取其中某个字段的值
 
-            # 发送get请求
-            url = f'http://ip-api.com/json/{ip}?fields=status,message,country,countryCode,region,regionName,city,zip,' \
-                  f'lat,lon,timezone,isp,org,as,query&lang=zh-CN '
-            # 其中fields字段为定义接受返回参数，可不传；lang为设置语言，zh-CN为中文，可以传
-            res = requests.get(url)  # 发送请求
-            jsonobj = eval(res.text)  # 传回参数转为字典
-            location = '当前服务器ip为:%s,属地为:%s' % (ip, jsonobj['country'] + jsonobj['regionName'] + jsonobj['city'])
-            print(location)
+                # 发送get请求
+                url = f'http://ip-api.com/json/{ip}?fields=status,message,country,countryCode,region,regionName,city,zip,' \
+                      f'lat,lon,timezone,isp,org,as,query&lang=zh-CN '
+                # 其中fields字段为定义接受返回参数，可不传；lang为设置语言，zh-CN为中文，可以传
+                res = requests.get(url)  # 发送请求
+                jsonobj = eval(res.text)  # 传回参数转为字典
+                location = '当前服务器ip为:%s,属地为:%s' % (ip, jsonobj['country'] + jsonobj['regionName'] + jsonobj['city'])
+                print(location)
 
-            # 邮箱通知
-            mail_content = {
-                'from': '慧通九职打卡',
-                "subject": now_time + back,
-                "Content_text": messge + location  # 打卡情况
-            }
-            server = zmail.server(qqmail, qqmailpwd)  # 登录邮箱
-            server.send_mail(email, mail_content)  # email为收件人 #发送邮件
+                # 邮箱通知
+                mail_content = {
+                    'from': '慧通九职打卡',
+                    "subject": now_time + back,
+                    "Content_text": messge + location  # 打卡情况
+                }
+                server = zmail.server(qqmail, qqmailpwd)  # 登录邮箱
+                server.send_mail(email, mail_content)  # email为收件人 #发送邮件
