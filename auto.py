@@ -42,13 +42,7 @@ for x in fhandle:
             server.send_mail(email, mail_content)  # email为收件人 #发送邮件
         else:
             idtoken = var[var.index('ey'):-27]  # 去除token多余参数
-            print('''
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼idtoken▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-%s
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼idtoken▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-                '''
-                  % idtoken
-                  )
+            print("▁▂", end='')
 
             # 2、获取ticket
             params = (
@@ -90,14 +84,8 @@ for x in fhandle:
                                      allow_redirects=False)
 
             tickets = response.headers['Location']  # 未经处理ticket
-            ticket = tickets[tickets.index('ST'):]
-            print('''
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼ticket▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-%s
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼ticket▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-                '''
-                  % ticket
-                  )  # 传递给下一段处理后的ticket
+            ticket = tickets[tickets.index('ST'):]  # 传递给下一段处理后的ticket
+            print("▃▄", end='')
 
             # 3、获取jsessionid
             params = (
@@ -125,13 +113,7 @@ for x in fhandle:
             jsessionids = response.headers['Set-Cookie']
             jsessionid = jsessionids[
                          jsessionids.index('JSESSIONID=') + 11:jsessionids.index('; path=/')]
-            print('''
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼jsessionid▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-%s
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼jsessionid▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-                '''
-                  % jsessionid
-                  )
+            print("▅▆", end='')
 
             # 4、获取bladauth
             params = (
@@ -160,13 +142,7 @@ for x in fhandle:
                                     allow_redirects=False)
             bladeauths = response.headers['Location']
             blade_auth = bladeauths[bladeauths.index('ey'):bladeauths.index('%26refreshtoken%3')]
-            print('''
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼bladauth▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-%s
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼bladauth▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-                '''
-                  % blade_auth
-                  )
+            print("▇█")
 
             # 获取前一天位置信息等
             BladeAuth = {"Blade-Auth": "bearer " + blade_auth}
@@ -207,20 +183,10 @@ for x in fhandle:
                 today_signdata = eval('{' + response.text[27:])  # 当天是否打卡
                 today_location = today_signdata["data"]['signin']['location']  # 今天打卡位置
                 toda_signtime = today_signdata["data"]['signin']['updateTime']  # 今天打卡时间
-                print('''
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼今日打卡结果▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-%s\n
-'有 %d 个数据存在>>>已打卡'
-▼▼▼▼▼▼▼▼▼▼▼▼▼▼今日打卡结果▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-                                '''
-                      % (response.text, len(response.text))
-                      )
-
+                print('有 %d 个数据存在>>>' % len(response.text), end='')
                 print('年轻的' + name + '哟，今天已经打过卡啦！')
                 print(toda_signtime + '在' + today_location + '成功打卡')
-                print('''
-▁▁▂▂▃▃▄▄▅▅▆▆▇▇██当前账户已完成██▇▇▆▆▅▅▄▄▃▃▂▂▁▁  
-                ''')
+                print("▁▂▃▄▅▆▇█当前账户已完成█▇▆▅▄▃▂▁\n\n")
             else:
                 # 打卡
                 payload = {"jzqk": "3", "schsjcrq": "0", "hsbg": "null", "dqqdw": "0", "drzt": "0", "xyhs": "0",
@@ -292,9 +258,9 @@ for x in fhandle:
                 # 发送get请求
                 url = f'http://ip-api.com/json/{ip}?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query&lang=zh-CN'
                 # 其中fields字段为定义接受返回参数，可不传；lang为设置语言，zh-CN为中文，可以传
-                res = requests.get(url)		# 发送请求
+                res = requests.get(url)  # 发送请求
                 jsonobj = eval(res.text)  # 传回参数转为字典
-                location = '当前服务器ip为:%s,属地为:%s'% (ip,jsonobj['country']+jsonobj['regionName']+jsonobj['city'])
+                location = '当前服务器ip为:%s,属地为:%s' % (ip, jsonobj['country'] + jsonobj['regionName'] + jsonobj['city'])
                 print(location)
 
                 # 邮箱通知
