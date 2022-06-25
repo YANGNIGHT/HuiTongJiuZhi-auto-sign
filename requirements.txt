@@ -1,3 +1,2 @@
 requests==2.25.1
-timedelta==2020.12.3
 zmail==0.2.8
