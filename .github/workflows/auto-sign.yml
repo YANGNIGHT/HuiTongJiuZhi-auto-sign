@@ -1,8 +1,8 @@
 name: 打卡
 on:
-    #push:
-    #schedule:
-    #- cron: '05 23 * * *'
+    push:
+    schedule:
+    - cron: '05 23 * * *'
 
 jobs:
     build:
